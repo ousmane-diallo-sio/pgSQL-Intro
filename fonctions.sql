@@ -47,8 +47,8 @@ $$
 			loop
 				if i >= debut then
 					if substr(left(chaine, i), i) = lettre then
-					raise info 'Lettre détectée pour la lettre n°%', i;
-					nb_occurences := nb_occurences +1;
+						raise info 'Lettre détectée pour la lettre n°%', i;
+						nb_occurences := nb_occurences +1;
 					else
 						raise info 'aucune correspondance pour la lettre n°%', i;
 					end if;
@@ -113,6 +113,26 @@ $$
 		jours varchar[] := array ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'vendredi', 'Samedi', 'Dimanche'];
 	BEGIN
 		return jours[extract(dow from date)];
+	END;
+$$ language plpgsql;
+
+
+\c hhbdirect;
+create or replace function getNbClientsDebiteurs() returns integer as
+$$
+	BEGIN
+		
+	END;
+$$ language plpgsql;
+
+create or replace function getNbClientsParVille(ville varchar) returns integer as
+$$	
+	DECLARE
+		villeClient record;
+	BEGIN
+		select adresse_client into villeClient from client where instr( adresse_client, ville, 1) = 7;
+		raise info 'villeClient : %', villeClient;
+		return count(villeClient); 
 	END;
 $$ language plpgsql;
 
